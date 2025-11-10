@@ -1,0 +1,13 @@
+\begin{thebibliography}{1}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Mattes et~al.(2024)Mattes, Schlosser, and Herbrich]{mattes2024hieroshierarchicalimaginationstructured}
+Paul Mattes, Rainer Schlosser, and Ralf Herbrich.
+\newblock Hieros: Hierarchical imagination on structured state space sequence world models, 2024.
+\newblock URL \url{https://arxiv.org/abs/2310.05167}.
+
+\end{thebibliography}

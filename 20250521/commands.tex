@@ -1,0 +1,104 @@
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{xcolor}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{blkarray}
+\usepackage{bm}
+\usepackage{physics}
+\usepackage{etoolbox}
+\usepackage{eqparbox}
+\usepackage{graphicx}
+
+% Fonts
+\renewcommand{\rmdefault}{ptm}
+\renewcommand{\sfdefault}{phv}
+
+% Spacing
+\setlength\parindent{0pt}
+\setlength\parskip{1ex plus 1ex minus 0.5ex}
+
+% Basic notation
+% \DeclareMathOperator*{\argmax}{arg\,max}
+% \DeclareMathOperator*{\argmin}{arg\,min}
+% \renewcommand\d{\mathop{}\!\textnormal{\slshape d}}
+% \newcommand\eye{\mathop{}\!\mathbb{I}}
+% \newcommand\defined{\doteq}
+% \newcommand\upto{\stackrel{+}{=}}
+% \newcommand\without{\setminus}
+% \newcommand{\describe}[3][0pt]{\hspace*{.12em}\underbracket[0.5pt][1pt]{#2\hspace*{#1}}_\text{#3}}
+% \newcommand{\describel}[2]{\Shortunderstack[l]{$\underbracket[1pt][0pt]{#1}$ \raisebox{.8ex}{\scriptsize\rlap{#2}}}}
+% \newcommand{\changes}[1]{\underbracket[1pt][0pt]{#1}}
+
+% % Equation
+% \makeatletter
+% \newcommand{\removeParBefore}{\ifvmode\vspace*{-\baselineskip}\setlength{\parskip}{0ex}\fi}
+% \newcommand{\removeParAfter}{\@ifnextchar\par\@gobble\relax}
+% \newcommand{\eq}{\begingroup\removeParBefore\endlinechar=32 \eqinner}
+% \newcommand{\eqinner}[2][aligned]{\endlinechar=32%
+% \begin{gather}\begin{#1}#2\end{#1}\end{gather}\endgroup\removeParAfter}
+% \makeatother
+
+% % Density
+% \DeclareDocumentCommand{\p}{ D<>{p} D<>{} r() }{
+% \def\content{#3}\patchcmd{\content}{|}{\;#2\vert\;}{}{}
+% \ensuremath{#1 #2(\content #2)}}
+
+% % Probability
+% \DeclareDocumentCommand{\P}{ D<>{P} D<>{\big} r() }{
+% \def\content{#3}\patchcmd{\content}{|}{\;#2\vert\;}{}{}
+% \ensuremath{\operatorname{#1}#2(\content #2)}}
+
+% % Expectation
+% \DeclareDocumentCommand{\E}{ D<>{E} E{_}{{}} D<>{\big} r[] }{
+% \def\content{#4}\patchcmd{\content}{|}{\;#3\vert\;}{}{}
+% \ensuremath{\operatorname{#1}_{#2}#3[\content #3]}}
+
+% % Divergence
+% \DeclareDocumentCommand{\D}{ D<>{D} D<>{\big} r[] }{
+% \def\content{#3}\patchcmd{\content}{||}{\;#2\|\;}{}{}
+% \ensuremath{\operatorname{#1}\!#2[\content #2]}}
+
+% % Distributions
+% \NewDocumentCommand{\Nor}{ r() }{\P<Normal>](#1)}
+% \NewDocumentCommand{\Cat}{ r() }{\P<Cat>](#1)}
+% \NewDocumentCommand{\Bin}{ r() }{\P<Bin>](#1)}
+% \NewDocumentCommand{\Bet}{ r() }{\P<Beta>](#1)}
+% \NewDocumentCommand{\Ber}{ r() }{\P<Bernoulli>(#1)}
+% \NewDocumentCommand{\Dir}{ r() }{\P<Dir>(#1)}
+
+% % Information
+% \DeclareDocumentCommand{\KL}{ D<>{\big} r[] }{\D<KL><#1>[#2]}
+% \DeclareDocumentCommand{\H}{ D<>{\big} r[] }{\E<H><#1>[#2]}
+% \DeclareDocumentCommand{\I}{ D<>{\big} r[] }{\E<I><#1>[#2]}
+
+% % Symbols
+% \newcommand{\cmark}{\textcolor{green}{\ding{51}}}
+% \newcommand{\xmark}{\textcolor{red}{\ding{55}}}
+
+% % Shortcuts
+% \DeclareDocumentCommand{\lnpp}{ D<>{} r() }{
+% \ensuremath{\p<\ln p_\phi><#1>(#2)}}
+% \DeclareDocumentCommand{\pp}{ D<>{} r() }{
+% \ensuremath{\p<p_\phi><#1>(#2)}}
+% \DeclareDocumentCommand{\qp}{ D<>{} r() }{
+% \ensuremath{\p<q_\phi><#1>(#2)}}
+% \DeclareDocumentCommand{\SymLogNormal}{ D<>{} r() }{
+% \ensuremath{\p<\operatorname{SymLogNormal}><#1>(#2)}}
+% \newcommand{\sign}{\operatorname{sign}}
+% % \newcommand{\abs}{\operatorname{abs}}
+% \newcommand{\eps}{\epsilon}
+% % \newcommand{\erf}{\operatorname{erf}}
+% \newcommand{\fot}{\textstyle\frac{1}{2}}
+% \newcommand{\symlog}{\ensuremath{\operatorname{symlog}}}
+% \newcommand{\symexp}{\ensuremath{\operatorname{symexp}}}
+% \newcommand{\twohot}{\ensuremath{\operatorname{twohot}}}
+% \newcommand{\sg}{\ensuremath{\operatorname{sg}}}
+% \newcommand{\softmax}{\operatorname{softmax}}
+% \newcommand{\logsoftmax}{\operatorname{log\,softmax}}
+% \newcommand{\EMA}{\operatorname{EMA}}
+% \newcommand{\Per}{\operatorname{Per}}
+% \newcommand{\ema}{\operatorname{ema}}
+% \newcommand{\per}{\operatorname{per}}

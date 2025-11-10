@@ -1,0 +1,9 @@
+\begin{figure*}[t]
+    \centering
+    \begin{subfigure}[t]{0.99\linewidth}
+        \includegraphics[width=\linewidth]{figures/dynamics_error/bar_cum_dynamics_error.pdf}
+    \end{subfigure}
+    \hfill
+    \caption{\label{fig:dynamics_error} \textbf{Average Accumulated Dynamics Prediction Errors} on the \texttt{Pendulum Swingup} task for 200 trajectories. For DreamerV3 we average the forward and backward KL divergence between the prior and posterior distributions of the latent state $z_t$. For TD-MPC2 the MSE between the predicted latent state $\hat{z}_t$ of the dynamics model and the encoded latent state $z_t$ is plotted. Thin black lines denote the standard error.}
+    \vspace*{-2ex}
+\end{figure*}

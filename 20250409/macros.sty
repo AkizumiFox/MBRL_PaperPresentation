@@ -1,0 +1,139 @@
+\makeatletter
+\DeclareRobustCommand\onedot{\futurelet\@let@token\@onedot}
+\def\@onedot{\ifx\@let@token.\else.\null\fi\xspace}
+\def\st{\textrm{s.t}\onedot}
+\def\eg{\emph{e.g}\onedot} \def\Eg{\emph{E.g}\onedot}
+\def\ie{\emph{i.e}\onedot} \def\Ie{\emph{I.e}\onedot}
+\def\cf{\emph{cf}\onedot} \def\Cf{\emph{Cf}\onedot}
+\def\etc{\emph{etc}\onedot} \def\vs{\emph{vs}\onedot}
+\def\wrt{w.r.t\onedot} \def\dof{d.o.f\onedot}
+\def\etal{\emph{et al}\onedot}
+\makeatother
+
+% \DeclareMathOperator*{\argmax}{arg\,max}
+% \DeclareMathOperator*{\argmin}{arg\,min}
+
+\newcommand{\iu}{{i\mkern1mu}}
+% \newcommand{\Tr}{\intercal}
+% \newcommand*{\Tr}{\mkern-1.5mu\mathsf{T}}  % source: https://tex.stackexchange.com/questions/30619/what-is-the-best-symbol-for-vector-matrix-transpose
+\renewcommand*{\Tr}{\top}
+
+% \DeclareMathOperator*{\E}{\mathbb{E}}
+
+% Basic RL defs:
+\newcommand{\statesSet}{\mathcal{S}}
+\newcommand{\actionsSet}{\mathcal{A}}
+\newcommand{\transKernel}{p}
+\newcommand{\rewardFn}{r}
+\newcommand{\obsSet}{\Omega}
+\newcommand{\obsTransFn}{O}
+\newcommand{\discountF}{\gamma}
+
+\newcommand{\policy}{\pi}
+\newcommand{\valueFn}{V^{\policy}}
+
+
+\newcommand{\obs}{\mathbf{o}}
+\renewcommand{\action}{a}
+\newcommand{\token}{z}
+\newcommand{\tokens}{\mathbf{\token}}
+\newcommand{\tknEmb}{\mathbf{e}}
+\newcommand{\tknEmbs}{\MakeUppercase\tknEmb}
+\newcommand{\tknBlock}{\textbf{b}}
+\newcommand{\reward}{r}
+\newcommand{\rewardRv}{R}
+\newcommand{\doneSgnl}{d}
+
+
+\newcommand{\horizon}{H}
+
+
+
+% \newcommand{\tokensSet}{\mathcal{}}
+\newcommand{\tknzrVocabSize}{N}
+\newcommand{\tokensPerObs}{K}
+\newcommand{\tknzrLatent}{\mathbf{h}}
+\newcommand{\tknzrLatents}{\MakeUppercase\tknzrLatent}
+\newcommand{\decLatent}{\hat{\tknzrLatent}}
+\newcommand{\decLatents}{\MakeUppercase\tknzrLatent}
+\newcommand{\tknzrEmbDim}{d}
+\newcommand{\tknzrCodebook}{\mathcal{E}}
+
+
+
+%% RetNet:
+\newcommand{\retnetNumLayers}{L}
+\newcommand{\retnetLayerMSROut}{\mathbf{X}}
+\newcommand{\retnetLayerFFN}{\mathrm{FFN}}
+\newcommand{\retnetLayerMSR}{\mathrm{MSR}}
+\newcommand{\retnetLayerLN}{\mathrm{LN}}
+\newcommand{\retnetGeluActivation}{\mathrm{gelu}}
+\newcommand{\retnetSwishActivation}{\mathrm{swish}}
+\newcommand{\retentionOp}[1]{\mathrm{Retention}(#1)}
+\newcommand{\retnetOp}[1]{\mathrm{RetNet}(#1)}
+\newcommand{\retnetDmodel}{d}
+\newcommand{\retnetInput}{\mathbf{X}}
+\newcommand{\retnetState}{\mathbf{S}}
+\newcommand{\retnetSeqLen}{m}
+\newcommand{\retnetQ}{\mathbf{Q}}
+\newcommand{\retnetK}{\mathbf{K}}
+\newcommand{\retnetV}{\mathbf{V}}
+\newcommand{\retnetD}{\mathbf{D}}
+\newcommand{\retnetW}{\mathbf{W}}
+\newcommand{\retnetY}{\mathbf{Y}}
+\newcommand{\retnetq}{\mathbf{q}}
+\newcommand{\retnetk}{\mathbf{k}}
+\newcommand{\retnetv}{\mathbf{v}}
+\newcommand{\retnety}{\mathbf{y}}
+\newcommand{\retnetPos}{\Theta}
+\newcommand{\retnetPosC}{\bar{\Theta}}
+\newcommand{\retnetPosTheta}{\theta}
+\newcommand{\retnetEta}{\eta}
+\newcommand{\retnetChunkSize}{B}
+
+
+
+
+% Parallel Obs Prediction (POP)
+\newcommand{\predToken}{u}
+\newcommand{\predTokens}{\mathbf{\predToken}}
+\newcommand{\predEmb}{\mathcal{E}_{\predTokens}}
+\newcommand{\blocksPerChunk}{c}
+\newcommand{\timeIdxToTknIdx}[1]{[#1]}
+\newcommand{\popBlockIdx}[2]{t(#1, #2)}
+
+
+% Actor Critic Learning:
+\newcommand{\acCtxLen}{n_{\text{ctx}}}
+
+
+
+% \newcommand{\Controller}{\textbf{\texttt{C}}}
+% \newcommand{\WM}{\textbf{\texttt{M}}}
+% \newcommand{\Tokenizer}{\textbf{\texttt{V}}}
+\newcommand{\Tokenizer}{\mathcal{V}}
+\newcommand{\Controller}{\mathcal{C}}
+\newcommand{\WM}{\mathcal{M}}
+% \newcommand{\Tokenizer}{\mathbbold{V}}
+% \newcommand{\Controller}{\mathbbold{C}}
+% \newcommand{\WM}{\mathbbold{M}}
+
+
+
+
+
+
+
+
+
+
+\newcommand{\popOutsA}{\mathbf{A}}
+\newcommand{\popOutsB}{\mathbf{B}}
+
+\newcommand{\actionEmb}{\mathbf{a}}
+
+
+
+
+% appendix notations:
+\newcommand{\retnetLayerOutput}[1]{\mathbf{Y}^{#1}}

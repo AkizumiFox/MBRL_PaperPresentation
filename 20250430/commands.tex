@@ -1,0 +1,149 @@
+% Document encoding and font
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{microtype}
+
+% Math packages
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{nicefrac}
+
+% Tables
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{makecell}
+\usepackage{adjustbox}
+
+% Figures and graphics
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{subcaption}
+\usepackage{wrapfig}
+\usepackage{sidecap}
+\usepackage{pifont}
+
+% Algorithms
+% Prevent conflict between algorithm2e and algorithm packages
+\usepackage[ruled, vlined]{algorithm2e}
+\let\listofalgorithms\relax % Undefine \listofalgorithms before loading algorithm
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage[noend]{algpseudocode}
+
+% References and links
+\usepackage[sort]{natbib}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage[capitalise,noabbrev]{cleveref}
+
+% Spacing and layout
+\usepackage{setspace}
+
+% Load siunitx for \qty command
+\usepackage{siunitx}
+
+\pgfplotsset{compat=newest}
+\usetikzlibrary{arrows,arrows.meta,calc}
+\usetikzlibrary{patterns,backgrounds}
+\usetikzlibrary{positioning,fit}
+\usetikzlibrary{shapes.geometric,shapes.multipart}
+\usetikzlibrary{patterns.meta,decorations.pathreplacing,calligraphy}
+\usetikzlibrary{tikzmark}
+\usetikzlibrary{decorations.pathmorphing}
+
+\AtBeginDocument{\RenewCommandCopy\qty\SI}
+\pgfplotsset{compat=newest}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}{%
+  \hfill\usebeamercolor[fg]{page number in head/foot}%
+  \usebeamerfont{page number in head/foot}%
+  \insertframenumber\,/\,\inserttotalframenumber\hspace*{1ex}\vskip2pt%
+}
+\setbeamercolor{page number in head/foot}{fg=gray}
+\setbeamerfont{page number in head/foot}{size=\small}
+\setbeamerfont{title}{size=\huge}
+
+% Spacing
+\setlength\parindent{0pt}
+\setlength\parskip{1ex plus 1ex minus 0.5ex}
+
+\DeclarePairedDelimiterX{\DivX}[2]{(}{)}{#1\;\delimsize\|\;#2}
+\newcommand{\kl}{D_\text{KL}\DivX}
+
+\DeclarePairedDelimiter{\Paren}{\lparen}{\rparen}
+\newcommand{\ent}[1][]{H_{#1}\Paren}
+\newcommand{\sg}{\text{sg}\Paren}
+
+\DeclarePairedDelimiter{\Brack}{\lbrack}{\rbrack}
+\newcommand{\ev}[1][]{\mathbb{E}_{#1}\Brack}
+
+\newcommand{\cond}{\:\lvert\:}
+
+\newcommand{\overbar}[1]{\mkern 1.5mu\overline{\mkern-1.5mu#1\mkern-1.5mu}\mkern 1.5mu}
+
+% https://tex.stackexchange.com/a/203600
+\DeclareMathOperator*{\sumt}{\textstyle\sum}
+\DeclareMathOperator*{\intt}{\textstyle\int}
+\DeclareMathOperator*{\prodt}{\textstyle\prod}
+
+% Symbols
+\newcommand{\obsparam}{\phi}
+\newcommand{\dynparam}{\psi}
+\newcommand{\actorparam}{\theta}
+\newcommand{\criticparam}{\xi}
+\newcommand{\obsprob}{p_\obsparam}
+\newcommand{\dynprob}{p_\dynparam}
+\newcommand{\dynfunc}{f_\dynparam}
+\newcommand{\actor}{\pi_\actorparam}
+\newcommand{\critic}{v_\criticparam}
+\newcommand{\dataset}{\mathcal{D}}
+\newcommand{\datasetsize}{T}
+\newcommand{\datasettemp}{\tau}
+\newcommand{\entropycoef}{\alpha_1}
+\newcommand{\consistencycoef}{\alpha_2}
+\newcommand{\latentcoef}{\alpha_3}
+\newcommand{\rewardcoef}{\beta_1}
+\newcommand{\discountcoef}{\beta_2}
+\newcommand{\historylength}{\ell}
+\newcommand{\wmbatchsize}{N}
+\newcommand{\acbatchsize}{M}
+\newcommand{\achorizon}{H}
+\newcommand{\loss}{\mathcal{L}}
+\newcommand{\actorentropycoef}{\eta}
+\newcommand{\actorentropythreshold}{\Gamma}
+
+% setup algorithms
+% https://tex.stackexchange.com/a/274708
+% https://tex.stackexchange.com/a/534197
+\newcommand\keywordfont[1]{\textnormal{\textcolor{blue!90!black}{\ttfamily\bfseries #1}}\unskip}
+\algrenewcommand\algorithmicend{{\keywordfont{end}}}
+\algrenewcommand\algorithmicdo{{\keywordfont{do}}}
+\algrenewcommand\algorithmicwhile{{\keywordfont{while}}}
+\algrenewcommand\algorithmicfor{{\keywordfont{for}}}
+\algrenewcommand\algorithmicforall{{\keywordfont{for all}}}
+\algrenewcommand\algorithmicloop{{\keywordfont{loop}}}
+\algrenewcommand\algorithmicrepeat{{\keywordfont{repeat}}}
+\algrenewcommand\algorithmicuntil{{\keywordfont{until}}}
+\algrenewcommand\algorithmicprocedure{{\keywordfont{procedure}}}
+\algrenewcommand\algorithmicfunction{{\keywordfont{function}}}
+\algrenewcommand\algorithmicif{{\keywordfont{if}}}
+\algrenewcommand\algorithmicthen{{\keywordfont{then}}}
+\algrenewcommand\algorithmicelse{{\keywordfont{else}}}
+\algrenewcommand\algorithmicrequire{{\keywordfont{Require:}}}
+\algrenewcommand\algorithmicensure{{\keywordfont{Ensure:}}}
+\algrenewcommand\algorithmicreturn{{\keywordfont{return}}}
+% https://tex.stackexchange.com/a/534197
+\algrenewcommand\textproc{}
+% https://tex.stackexchange.com/a/74885
+\algnewcommand{\LineComment}[1]{\State \textcolor{green!50!black}{// #1}}
+
+% Make sure \RenewCommandCopy is defined
+\providecommand{\RenewCommandCopy}{\let}
+
+
+\newcommand{\fix}{\marginpar{FIX}}
+\newcommand{\new}{\marginpar{NEW}}
+
+\let\ab\allowbreak

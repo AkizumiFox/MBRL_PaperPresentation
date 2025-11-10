@@ -1,0 +1,6 @@
+\beamer@slide {eq:reinforce}{12}
+\beamer@slide {eq:reinforce_actor}{12}
+\beamer@slide {eq:reinforce_critic}{12}
+\beamer@slide {eq:lambda_return}{12}
+\beamer@slide {eq:norm_lambda_return}{13}
+\beamer@slide {eq:slow_critic}{13}

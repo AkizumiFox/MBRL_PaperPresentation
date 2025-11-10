@@ -1,0 +1,4 @@
+\babel@toc {english}{}\relax 
+\beamer@sectionintoc {2}{Uncovering Untapped Potential in Sample-Efficient World Model Agents (Simulus)}{3}{0}{1}
+\beamer@sectionintoc {3}{Simple, Good, Fast: Self-Supervised World Models Free of Baggage (SGF)}{11}{0}{2}
+\beamer@sectionintoc {4}{Limitations}{18}{0}{3}

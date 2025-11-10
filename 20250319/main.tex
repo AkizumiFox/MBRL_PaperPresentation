@@ -1,0 +1,466 @@
+\documentclass[9pt]{beamer}
+\input{commands}
+
+% Basic packages
+\usepackage[utf8]{inputenc}
+\usepackage{microtype}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{nicefrac}
+\usepackage{subcaption}
+\usepackage{wrapfig}
+\usepackage[ruled, vlined]{algorithm2e}
+\usepackage{sidecap}
+
+% TikZ and related libraries
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=newest}
+\usetikzlibrary{arrows,arrows.meta,calc}
+\usetikzlibrary{patterns,backgrounds}
+\usetikzlibrary{positioning,fit}
+\usetikzlibrary{shapes.geometric,shapes.multipart}
+\usetikzlibrary{patterns.meta,decorations.pathreplacing,calligraphy}
+\usetikzlibrary{tikzmark}
+\usetikzlibrary{decorations.pathmorphing}
+
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{array}
+% \usepackage{siunitx}
+\usepackage{makecell}
+
+\usepackage[sort]{natbib}
+
+\AtBeginDocument{\RenewCommandCopy\qty\SI}
+
+\pgfplotsset{compat=newest}
+
+\newcommand{\blap}[1]{\vbox to 0pt{\hbox{#1}\vss}}
+
+\newcommand{\enc}{h}
+\newcommand{\Infop}{\info_{p,h}}
+\newcommand{\Expp}{\Exp_{p,h}}
+
+\newcommand{\x}{\mathbf{x}}
+\newcommand{\z}{\mathbf{z}}
+\newcommand{\y}{\mathbf{y}}
+\newcommand{\w}{\mathbf{w}}
+\newcommand{\bo}{\mathbf{o}}
+\newcommand{\ba}{\mathbf{a}}
+\newcommand{\bz}{\mathbf{z}}
+\newcommand{\bs}{\mathbf{s}}
+\newcommand{\scoref}{\nabla_\x \log p^\tau(\x)}
+\newcommand{\scorem}{\mathbf{S}_\theta(\x, \tau)}
+\newcommand{\bbe}{\mathbb{E}}
+\newcommand{\Tau}{\mathcal{T}}
+\newcommand*{\diris}{$\Delta$-\textsc{iris}}
+\newcommand*{\dtoken}{$\Delta$}
+\newcommand*{\itoken}{\scalebox{0.9}[0.9]{I}}
+% \renewcommand*{\argmin}{argmin}
+% \renewcommand*{\argmax}{argmax}
+% \renewcommand{\norm}{\big\lVert}{\big\rVert}
+
+\setbeamertemplate{navigation symbols}{}
+
+% Add page number to the lower right corner
+\setbeamertemplate{footline}{%
+  \hfill\usebeamercolor[fg]{page number in head/foot}%
+  \usebeamerfont{page number in head/foot}%
+  \insertframenumber\,/\,\inserttotalframenumber\hspace*{1ex}\vskip2pt%
+}
+
+% Customize the page number appearance
+\setbeamercolor{page number in head/foot}{fg=gray}
+\setbeamerfont{page number in head/foot}{size=\small}
+
+\title{Efficient World Models \\ with Context-Aware Tokenization}
+\setbeamerfont{title}{size=\huge}
+\date{March 12, 2025}
+
+\begin{document}
+
+\begin{frame}
+    \titlepage
+\end{frame}
+
+\begin{frame}
+    \frametitle{Reference}
+
+    \bibliographystyle{plainnat}
+    \bibliography{references}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Background}
+    
+    \begin{itemize}
+        \item \textsc{iris} agent achieved strong results in Atari 100k benchmark
+        \begin{itemize}
+            \item World model: discrete autoencoder + autoregressive transformer
+            \item Dynamics learning as sequence modelling of image tokens
+            \item Opened avenues for model-based methods leveraging generative modelling advances
+        \end{itemize}
+        \vspace{0.5em}
+        
+        \item Scaling challenges:
+        \begin{itemize}
+            \item Complex environments require many tokens to encode frames
+            \item Sophisticated dynamics need longer memory of past states
+            \item Imagination procedure becomes prohibitively slow
+            \item Hard to maintain good imagined-to-collected data ratio
+        \end{itemize}
+        \vspace{0.5em}
+        
+        \item Approach: \diris (\cite{micheli2024efficientworldmodelscontextaware})
+        \begin{itemize}
+            \item Attends to trajectory of observations and actions
+            \item Encodes stochastic deltas between time steps
+            \item Reduces token count and offloads deterministic aspects to autoencoder
+            \item Interleaves continuous state summaries with discrete transition tokens
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Differential Tokens}
+    
+    \begin{itemize}
+        \item Key features of \diris:
+        \begin{itemize}
+            \item Scales to visually complex environments with longer time horizons
+            \item Encodes frames by attending to trajectory of observations and actions
+            \item Describes stochastic deltas between time steps
+        \end{itemize}
+        \vspace{0.5em}
+        
+        \item Benefits of differential encoding:
+        \begin{itemize}
+            \item Drastically reduces number of tokens needed per frame
+            \item Offloads deterministic aspects to autoencoder
+            \item Lets transformer focus on stochastic dynamics
+        \end{itemize}
+        \vspace{0.5em}
+        
+        \item Challenges and solutions:
+        \begin{itemize}
+            \item \dtoken-tokens make autoregressive prediction more difficult
+            \item Model must integrate over multiple steps to represent current state
+            \item Solution: Interleave continuous \itoken-tokens (state summaries) with discrete \dtoken-tokens
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{\textsc{iris} vs \diris}
+    \begin{center}
+    \includegraphics[width=\textwidth]{figures/1.png}
+    \end{center}
+    \begin{center}
+    \vspace{-1em}
+    Discrete autoencoder comparison: \textsc{iris} (left) encodes frames independently, requiring $z_t$ to carry all information for reconstruction. \diris\ (right) conditions on past frames/actions, so $z_t$ only captures stochastic changes. This reduces required tokens ($K \ll K_I$), speeding up autoregressive prediction.
+    \end{center}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Background: IRIS}
+    
+    \begin{itemize}
+        \item Discrete autoencoder for image tokenization:
+        \begin{itemize}
+            \item Encoder maps images to discrete tokens: $E_I: \mathbb{R}^{h \times w \times 3} \rightarrow \{1,\dots,N_I\}^{K_I}$
+            \item Decoder reconstructs images from tokens: $D_I: \{1,\dots,N_I\}^{K_I} \rightarrow \mathbb{R}^{h \times w \times 3}$
+            \item Trained with reconstruction, perceptual and commitment losses
+        \end{itemize}
+        \vspace{0.5em}
+        
+        \item Transformer for dynamics modeling:
+        \begin{itemize}
+            \item Operates on sequence of image and action tokens
+            \item Predicts transitions, rewards, and terminations autoregressively
+            \item Trained with cross-entropy on experience segments
+        \end{itemize}
+        \vspace{0.5em}
+        
+        \item Key capabilities:
+        \begin{itemize}
+            \item Builds reusable vocabulary for frame encoding
+            \item Attends to history for predictions
+            \item Models joint distribution of future states
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Disentangling deterministic and stochastic dynamics - Part 1}
+    
+    \begin{itemize}
+        \item \textsc{iris} limitations:
+        \begin{itemize}
+            \item Encodes frames independently - no temporal redundancy assumptions
+            \item Large token count needed for visually complex frames
+            \item Quadratic attention cost limits computation
+        \end{itemize}
+        \vspace{0.5em}
+        
+        \item Solution: Condition autoencoder on history
+        \begin{itemize}
+            \item Only encode changes (deltas) between frames
+            \item Deltas often simpler than full frames
+            \item Separate deterministic and stochastic components
+        \end{itemize}
+        \vspace{0.5em}
+        
+        \item Example: Grid-world movement
+        \begin{itemize}
+            \item Deterministic: Agent moving based on key press
+            \item Stochastic: Random enemy appearances
+            \item Only need to encode stochastic events
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}   
+    \frametitle{Disentangling deterministic and stochastic dynamics- Part 2}
+    
+    \begin{itemize}
+        \item Set definitions:
+        \begin{itemize}
+            \item $\mathcal{S}_n (\mathcal{Y}) = \bigcup_{i = 1}^n \mathcal{Y} ^ i$ for tuples up to length $n$
+            \item $\mathcal{S} (\mathcal{Y}) = \mathcal{S}_\infty(\mathcal{Y})$ for infinite tuples
+            \item Token vocabulary: $\mathcal{Z} = \{1, \dots, N\}$
+        \end{itemize}
+        \vspace{0.5em}
+        
+        \item Encoder $E : \mathcal{S} ( \mathcal{X} \times \mathcal{A} ) \times \mathcal{X} \rightarrow \mathcal{Z} ^ K$:
+        \begin{itemize}
+            \item Input: $(x_0, a_0, \dots, x_{t-1}, a_{t-1}, x_t)$
+            \item Output: $z_t = (z_t^1, \dots, z_t^K)$ \dtoken-tokens
+            \item CNN-based with vector quantization
+        \end{itemize}
+        \vspace{0.5em}
+        
+        \item Decoder $D : \mathcal{S} ( \mathcal{X} \times \mathcal{A} ) \times \mathcal{Z} ^ K \rightarrow \mathcal{X}$:
+        \begin{itemize}
+            \item Input: $(x_0, a_0, \dots, x_{t-1}, a_{t-1}, z_t)$
+            \item Output: Reconstructed frame $\hat{x}_t$
+            \item Losses: $L_1 + L_2 + L_\text{max} + L_\text{commit}$
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Modelling Stochastic Dynamics - Part 1}
+    
+    \begin{itemize}
+        \item Challenge: Predicting future \dtoken-tokens is difficult
+        \begin{itemize}
+            \item Complex integration over past actions and tokens
+            \item Example: Random enemy movement in grid world
+            \item Hard to predict agent-enemy interactions
+        \end{itemize}
+        \vspace{0.5em}
+        
+        \item Solution: Interleaved continuous \itoken-tokens
+        \begin{itemize}
+            \item Similar to MPEG's \itoken-frames
+            \item Create "soft" Markov blanket
+            \item Avoid integrating over past \dtoken-tokens
+        \end{itemize}
+        \vspace{0.5em}
+        
+        \item \itoken-token Generation:
+        \begin{itemize}
+            \item Auxiliary CNN processes frames
+            \item No discrete autoencoder or reconstruction loss
+            \item Optimized end-to-end with dynamics model
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Modelling Stochastic Dynamics - Part 2}
+    
+    \begin{itemize}
+        \item Dynamics Model Input Sequence:
+        \begin{itemize}
+            \item Past \itoken-tokens $\tilde{x}_i$
+            \item Action tokens $a_i$
+            \item \dtoken-tokens $z_i^k$
+        \end{itemize}
+        \vspace{0.5em}
+        
+        \item Model Predictions:
+        \begin{itemize}
+            \item Next \dtoken-token distribution: $p_{G}(\hat{z}_{t}^{k+1} | \tilde{x}_{< t}, z_{< t}, a_{< t}, z_{t}^{\le k})$
+            \item Reward distribution: $p_{G}(\hat{r}_{t} | \tilde{x}_{\le t} z_{\le t}, a_{\le t})$
+            \item Termination distribution: $p_{G}(\hat{d}_{t} | \tilde{x}_{\le t}, z_{\le t}, a_{\le t})$
+        \end{itemize}
+        \vspace{0.5em}
+        
+        \item Implementation Details:
+        \begin{itemize}
+            \item Transformer encoder with causal self-attention
+            \item Cross-entropy loss for transitions and terminations
+            \item Discrete regression with two-hot targets for rewards
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Modelling Stochastic Dynamics - Figure}
+    \begin{center}
+    \includegraphics[width=\textwidth]{figures/2.png}
+    \end{center}
+    \begin{center}
+    \vspace{-1em}
+    Unrolling dynamics over time. At each step (dashed lines), the GPT-like transformer $G$ predicts \dtoken-tokens for the next frame, plus reward and termination. It takes action tokens, \dtoken-tokens, and \itoken-tokens as input, where \itoken-tokens are continuous embeddings that reduce need to attend to past \dtoken-tokens. Initial frame $x_0$ embeds to \itoken-token $\tilde{x_0}$. From $\tilde{x_0}$ and $a_0$, $G$ predicts reward $\hat{r}_0$, termination $\hat{d}_0$, and autoregressively predicts \dtoken-tokens $\hat{z}_1 = (\hat{z}_1^1, \dots, \hat{z}_1^K)$. During imagination, next frame (stripped box) is computed by decoder $D$ as $x_1 = D(x_0, a_0, \hat{z}_1)$.
+    \end{center}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Policy Improvement}
+    
+    \begin{itemize}
+        \item Learning in imagined POMDP:
+        \begin{itemize}
+            \item Policy $\pi$ trains using world model $(E,D,G)$
+            \item Starts from real observation $x_0$ from experience
+            \item Rolls out for $H$ steps or until termination
+        \end{itemize}
+        \vspace{0.5em}
+        
+        \item Imagination procedure:
+        \begin{itemize}
+            \item Policy observes reconstructed state: $\hat{x}_t$
+            \item Samples action: $a_t \sim \pi(a_t | \hat{x}_{\le t})$
+            \item Model predicts reward $\hat{r}_t$ and termination $\hat{d}_t$
+            \item Model generates next tokens: $\hat{z}_{t+1} \sim p_G(\hat{z}_{t+1} | \hat{x}_{\le t}, \hat{a}_{\le t}, \hat{z}_{\le t})$
+            \item Decoder reconstructs next observation: $\hat{x}_{t+1} = D(\hat{x}_{\le t}, \hat{a}_{\le t}, \hat{z}_{\le t}, \hat{z}_{t+1})$
+        \end{itemize}
+        \vspace{0.5em}
+        
+        \item Training approach:
+        \begin{itemize}
+            \item Actor-critic method from IRIS
+            \item Value baseline predicts $\lambda$-returns
+            \item REINFORCE with value baseline
+            \item Entropy maximization for exploration
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Experiment}
+
+    \begin{center}
+    \scalebox{0.8}{
+    \begin{tabular}{lccccc}
+    \toprule
+    Method                     & Return @1M          & Return @5M           & Return @10M          & \#Parameters   & FPS     \\
+    \midrule
+    \diris                     & 7.7 (0.5)          & \textbf{15.4} (0.4) & \textbf{16.1} (0.1) & \textbf{25M} & 20          \\
+    DreamerV3 XL               & \textbf{9.2} (0.3) & 14.2 (0.2)          & 15.1 (0.3)          & 200M         & \textbf{30} \\
+    \textsc{iris} (64 tokens)  & 5.5 (0.7)          & -                    & -                    & 48M          & 2           \\
+    \midrule
+    \diris\ w/o \itoken-tokens & 6.6 (0.2)          & 10.4 (0.5)          & 12.6 (0.8)          & 24M          & 22          \\
+    DreamerV3 M                & 6.2 (0.5)          & 12.6 (0.7)          & 13.7 (0.8)          & 37M          & 40          \\
+    \textsc{iris} (16 tokens)  & 4.4 (0.1)          & -                    & -                    & 50M          & 6           \\
+    \bottomrule    
+    \end{tabular}
+    }
+    \end{center}
+
+    \begin{center}
+    \vspace{-1em}
+    Results on Crafter benchmark: \diris\ achieves best performance at 5-10M frames with 8x fewer parameters than DreamerV3 XL, demonstrating strong scaling in a visually complex environment.
+    \end{center}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Experiment}
+
+    \begin{center}
+    \includegraphics[width=0.8\textwidth]{figures/3.png}
+    \end{center}
+    \begin{center}
+    \vspace{-1em}
+    Removing I-tokens from the input sequence of the autoregressive transformer significantly hurts performance.
+    \end{center}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Reconstruction Errors}
+
+    \begin{center}
+        \includegraphics[width=\textwidth]{figures/4.png}
+    \end{center}
+
+    \begin{center}
+    \vspace{-1em}
+    Bottom $1\%$ test frames autoencoded by \diris\ (4 tokens) and \textsc{iris} (16 tokens). Each token takes a value in $\{1, 2, \dots, 1023, 1024\}$, i.e. \diris\ encodes frames with $4 \times \log_{2}(1024) = 40$ bits while \textsc{iris} uses 160 bits. Original frames, reconstructions, and errors are respectively displayed in the top, middle, and bottom rows. Even in the worst instances, \diris\ makes only minor errors, whereas \textsc{iris} fails to accurately reconstruct frames. These errors severely hamper the agent's performance, as it purely learns behaviours from frames generated by its autoencoder.
+    \end{center}
+\end{frame}
+
+\begin{frame}
+    \frametitle{\itoken-tokens}
+
+    \begin{center}
+        \includegraphics[width=\textwidth]{figures/5.png}
+    \end{center}
+
+    \begin{center}
+    \vspace{-1em}
+    Trajectories imagined with (top) and without (bottom) \itoken-tokens. The top trajectory shows 30+ seconds of coherent gameplay with complex mechanics learned by \diris' world model. Without \itoken-tokens, the model fails to predict future \dtoken-tokens accurately, leading to glitches that hinder policy learning in an unrealistic environment.
+    \end{center}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Returns on Atari 100k}
+
+    \begin{table}[h]
+    \begin{center}
+    \centering
+    \resizebox{0.9\textwidth}{!}{
+    \begin{tabular}{lrr rrrrr}
+    \toprule
+    Game                 &  Random    &  Human    &  SimPLe    &  DreamerV3      &  \textsc{storm}  &  \textsc{iris}    &  \diris\ (ours)     \\
+    \midrule
+    Alien                &  228       &  7128     &  617       &  959            &  \textbf{984}    &  420              &  391                \\
+    Amidar               &  6         &  1720     &  74        &  139            &  \textbf{205}    &  143              &  64                 \\
+    Assault              &  222       &  742      &  527       &  706            &  801             &  \textbf{1524}    &  1123               \\
+    Asterix              &  210       &  8503     &  1128      &  932            &  1028            &  854              &  \textbf{2492}                 \\
+    BankHeist            &  14        &  753      &  34        &  649            &  641             &  53               &  \textbf{1148}                 \\
+    BattleZone           &  2360      &  37188    &  4031      &  12250          &  \textbf{13540}  &  13074            &  11825               \\
+    Boxing               &  0         &  12       &  8         &  78             &  \textbf{80}     &  70               &  70                  \\
+    Breakout             &  2         &  31       &  16        &  31             &  16              &  84               &  \textbf{302}       \\
+    ChopperCommand       &  811       &  7388     &  979       &  420            &  \textbf{1888}   &  1565             &  1183                 \\
+    CrazyClimber         &  10781     &  35829    &  62584     &  \textbf{97190} &  66776           &  59324            &  57864                 \\
+    DemonAttack          &  152       &  1971     &  208       &  303            &  165             &  \textbf{2034}    &  533                 \\
+    Freeway              &  0         &  30       &  17        &  0              &  \textbf{34}     &  31               &  31        \\
+    Frostbite           &  65        &  4335     &  237       &  909            &  \textbf{1316}   &  259              &  279                 \\
+    Gopher               &  258       &  2413     &  597       &  3730           &  \textbf{8240}   &  2236             &  6445     \\
+    Hero                 &  1027      &  30826    &  2657      &  \textbf{11161} &  11044           &  7037             &  7049                 \\
+    Jamesbond            &  29        &  303      &  101       &  445            &  \textbf{509}    &  463              &  309                \\
+    Kangaroo             &  52        &  3035     &  51        &  4098           &  \textbf{4208}   &  838              &  2269                 \\
+    Krull                &  1598      &  2666     &  2205      &  7782           &  \textbf{8413}   &  6616             &  5978               \\
+    KungFuMaster         &  259       &  22736    &  14863     &  21420          &  \textbf{26182}  &  21760            &  21534              \\
+    MsPacman             &  307       &  6952     &  1480      &  1327           &  \textbf{2674}   &  999              &  1067                 \\
+    Pong                 &  -21       &  15       &  13        &  18             &  11              &  15               &  \textbf{20}        \\
+    PrivateEye           &  25        &  69571    &  35        &  882            &  \textbf{7781}   &  100              &  103                 \\
+    Qbert                &  164       &  13455    &  1289      &  3405           &  \textbf{4523}   &  746              &  1444                 \\
+    RoadRunner           &  12        &  7845     &  5641      &  15565          &  \textbf{17564}  &  9615             &  10414              \\
+    Seaquest             &  68        &  42055    &  683       &  618            &  525             &  661              &  \textbf{827}                 \\
+    UpNDown              &  533       &  11693    &  3350      &  \textbf{9234}  &  7985            &  3546             &  4072                 \\
+    \midrule
+    \#Superhuman         &  0         &  N/A      &  1         &  9              &  10              &  10               &  \textbf{11}        \\
+    Mean                 &  0.00      &  1.00     &  0.33      &  1.10           &  1.27            &  1.05             &  \textbf{1.39}      \\
+    Interquartile Mean   &  0.00      &  1.00     &  0.13      &  0.50           &  0.64            &  0.50             &  \textbf{0.65}               \\
+    \bottomrule
+    \end{tabular}
+    }
+    \end{center}
+    \end{table}
+\end{frame}
+
+\end{document}

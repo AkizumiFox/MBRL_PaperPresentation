@@ -1,0 +1,13 @@
+\begin{thebibliography}{1}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Micheli et~al.(2023)Micheli, Alonso, and Fleuret]{micheli2023transformerssampleefficientworldmodels}
+Vincent Micheli, Eloi Alonso, and François Fleuret.
+\newblock Transformers are sample-efficient world models, 2023.
+\newblock URL \url{https://arxiv.org/abs/2209.00588}.
+
+\end{thebibliography}

@@ -1,0 +1,30 @@
+\frametitle{S4WM Training Algorithm}
+\vspace{-0.2cm}
+    \begin{algorithm}
+    \SetAlgoNoLine
+    \caption{S4WM Training}
+    \label{alg:s4wm_training}
+
+    \KwIn{$(\rvx_0, \bm{a}_1, \rvx_1, \dots, \bm{a}_T, \rvx_T)$}
+
+    \tcc{Obtain posterior latents}
+    \For{\textnormal{time step} $t = 0, \dots, T$ \textnormal{\textbf{parallel}}}{
+        $\rvz_t \sim q(\rvz_t \!\mid\! \rvx_t) = \text{Encoder}(\rvx_t)$\;
+    }
+
+    \tcc{Prepare inputs to S4 blocks}
+    \For{\textnormal{time step} $t = 1, \dots, T$ \textnormal{\textbf{parallel}}}{
+        $\bm{g}_t = \text{MLP}(\texttt{concat}[\rvz_{t-1}, \bm{a}_t])$\;
+    }
+
+    \tcc{Encode history by S4 blocks}
+    $\bm{h}_{1:T}, \bm{s}_T = \text{S4Blocks}(\bm{g}_{1:T}, \bm{s}_0)$\;
+
+    \tcc{Compute prior and decode posterior latents}
+    \For{\textnormal{time step} $t = 1, \dots, T$ \textnormal{\textbf{parallel}}}{
+        $p(\rvz_t \!\mid\! \rvz_{<t}, \bm{a}_{\leq t}) = \text{MLP}(\bm{h}_t)$\;
+        $\hat{\rvx}_t = \text{Decoder}(\texttt{concat}[\bm{h}_t, \rvz_t])$\;
+    }
+
+    Compute objective using ELBO\;
+    \end{algorithm}
