@@ -1,7 +1,0 @@
-\begin{figure}[tb]
-    \begin{center}
-        \includegraphics[width=\linewidth]{figures/pvr_dreamer/pvr-dreamer.pdf}
-    \end{center}
-    \caption{\label{fig:pvr_dreamer} \textbf{Components of our PVR-based DreamerV3 (left) and TD-MPC2 (right) architectures.} In DreamerV3, the output $x_t$ of the frozen pre-trained vision module $g_{\textrm{\ding{100}}}$ is given to the encoder $\mathrm{enc}(z_t \vert x_t)$ which maps its input to a discrete latent variable $\textrm{z}_t$. In TD-MPC2 a stack $x_{t-3:t}$ of the last $3$ PVR embeddings is given to the encoder $\mathrm{enc}(x_{t-3:t})$ which maps the inputs to fixed-dimensional simplices. The encoder of DreamerV3 additionally requires the recurrent state $h_t$ as input. The rest of both algorithms remains unchanged. Adapted from \citet{hafner_mastering_2023} and \citet{hansen_td-mpc2:_2024}.}
-    \vspace{-2ex}
-\end{figure}
